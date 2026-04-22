@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 NCAA Elite Eight — Evidence-Based Team Evaluation Framework</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f4f0;
+    --bg-tertiary: #edece8;
+    --text-primary: #1a1a18;
+    --text-secondary: #6b6a64;
+    --text-tertiary: #9b9a94;
+    --border-light: rgba(0,0,0,0.10);
+    --border-medium: rgba(0,0,0,0.18);
+    --teal-dark: #0F6E56;
+    --teal-mid: #1D9E75;
+    --teal-light: #E1F5EE;
+    --teal-pale: #9FE1CB;
+    --green-dark: #3B6D11;
+    --green-light: #EAF3DE;
+    --amber-dark: #854F0B;
+    --amber-light: #FAEEDA;
+    --red-dark: #A32D2D;
+    --red-light: #FCEBEB;
+    --gray-dark: #5F5E5A;
+    --gray-light: #F1EFE8;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1e1e1c;
+      --bg-secondary: #282825;
+      --bg-tertiary: #323230;
+      --text-primary: #f0efea;
+      --text-secondary: #a8a79f;
+      --text-tertiary: #6b6a64;
+      --border-light: rgba(255,255,255,0.10);
+      --border-medium: rgba(255,255,255,0.18);
+      --teal-dark: #9FE1CB;
+      --teal-mid: #5DCAA5;
+      --teal-light: #04342C;
+      --teal-pale: #085041;
+      --green-dark: #C0DD97;
+      --green-light: #173404;
+      --amber-dark: #FAC775;
+      --amber-light: #412402;
+      --red-dark: #F7C1C1;
+      --red-light: #501313;
+      --gray-dark: #D3D1C7;
+      --gray-light: #2C2C2A;
+    }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .page-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .teams-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .team-pill {
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+
+  .tab-btn {
+    padding: 7px 16px;
+    font-size: 13px;
+    border: 0.5px solid var(--border-medium);
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .tab-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .tab-btn.active { background: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-medium); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 2rem; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+  }
+
+  .grid4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .metric-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+  }
+
+  .metric-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+  .metric-val { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-top: 4px; }
+  .metric-sub { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+
+  .insight-box {
+    border-left: 3px solid var(--teal-mid);
+    padding: 10px 14px;
+    background: var(--bg-secondary);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.65;
+  }
+
+  .insight-box:last-child { margin-bottom: 0; }
+  .insight-title { font-weight: 500; margin-bottom: 4px; font-size: 13px; }
+
+  /* Variable table */
+  .var-header {
+    display: grid;
+    grid-template-columns: 1fr 120px 90px;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-medium);
+    margin-bottom: 2px;
+  }
+
+  .var-row {
+    display: grid;
+    grid-template-columns: 1fr 120px 90px;
+    gap: 8px;
+    align-items: start;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-light);
+    font-size: 13px;
+  }
+
+  .var-row:last-child { border-bottom: none; }
+  .var-name { font-weight: 500; color: var(--text-primary); }
+  .var-note { color: var(--text-secondary); font-size: 12px; margin-top: 2px; line-height: 1.5; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-md);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .b-strong { background: var(--green-light); color: var(--green-dark); }
+  .b-moderate { background: var(--amber-light); color: var(--amber-dark); }
+  .b-weak { background: var(--gray-light); color: var(--gray-dark); }
+  .b-false { background: var(--red-light); color: var(--red-dark); }
+
+  .pts { font-weight: 500; color: var(--teal-mid); font-size: 13px; }
+
+  /* Transfer cards */
+  .transfer-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .t-card {
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 12px 8px;
+    text-align: center;
+    background: var(--bg-primary);
+  }
+
+  .t-rank { font-size: 24px; font-weight: 500; color: var(--text-primary); }
+  .t-label { font-size: 11px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4; }
+
+  .t-card.winner {
+    border: 2px solid var(--teal-mid);
+    background: var(--teal-light);
+  }
+
+  .t-card.winner .t-rank { color: var(--teal-dark); }
+  .t-card.winner .t-label { color: var(--teal-dark); }
+
+  /* Scoring model */
+  .score-header {
+    display: grid;
+    grid-template-columns: 32px 1fr 70px 70px;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-medium);
+  }
+
+  .score-row {
+    display: grid;
+    grid-template-columns: 32px 1fr 70px 70px;
+    gap: 8px;
+    align-items: start;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-light);
+    font-size: 13px;
+  }
+
+  .score-row:last-child { border-bottom: none; }
+
+  .rank-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .bar-wrap {
+    height: 5px;
+    background: var(--bg-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+
+  .bar-fill { height: 100%; border-radius: 3px; }
+
+  .score-sub { font-size: 12px; color: var(--text-secondary); margin-top: 3px; line-height: 1.5; }
+  .score-pts { font-weight: 500; color: var(--teal-mid); text-align: right; }
+  .score-why { font-size: 11px; color: var(--text-tertiary); text-align: right; line-height: 1.4; }
+
+  .score-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    margin-top: 4px;
+    border-top: 1px solid var(--border-light);
+  }
+
+  /* Checklist */
+  .checklist-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-light);
+    font-size: 13px;
+  }
+
+  .checklist-item:last-child { border-bottom: none; }
+
+  .check-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    font-size: 11px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .check-text { font-weight: 500; color: var(--text-primary); }
+  .check-sub { color: var(--text-secondary); font-size: 12px; margin-top: 3px; line-height: 1.5; }
+
+  /* Overrated */
+  .overrated-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  .or-left { padding: 10px 14px; background: var(--red-light); border-right: 0.5px solid var(--border-light); }
+  .or-right { padding: 10px 14px; background: var(--green-light); }
+  .or-label { font-size: 11px; font-weight: 500; margin-bottom: 3px; }
+  .or-left .or-label { color: var(--red-dark); }
+  .or-right .or-label { color: var(--green-dark); }
+  .or-text { color: var(--text-primary); line-height: 1.55; }
+
+  /* Stress test */
+  .stress-row {
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--border-light);
+    font-size: 13px;
+  }
+
+  .stress-row:last-child { border-bottom: none; }
+  .stress-q { font-weight: 500; color: var(--text-primary); margin-bottom: 5px; }
+  .stress-a { color: var(--text-secondary); line-height: 1.65; }
+
+  /* Big insight */
+  .big-insight {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    border-left: 4px solid var(--teal-mid);
+    margin-top: 1.5rem;
+  }
+
+  .big-insight-head {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--teal-dark);
+    margin-bottom: 6px;
+  }
+
+  .big-insight-body {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.7;
+  }
+
+  .score-tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .tier-card {
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .tier-card.gold { background: var(--green-light); }
+  .tier-card.silver { background: var(--amber-light); }
+  .tier-card.bronze { background: var(--red-light); }
+
+  .tier-range { font-size: 18px; font-weight: 500; }
+  .tier-card.gold .tier-range { color: var(--green-dark); }
+  .tier-card.silver .tier-range { color: var(--amber-dark); }
+  .tier-card.bronze .tier-range { color: var(--red-dark); }
+  .tier-label { font-size: 11px; margin-top: 2px; }
+  .tier-card.gold .tier-label { color: var(--green-dark); }
+  .tier-card.silver .tier-label { color: var(--amber-dark); }
+  .tier-card.bronze .tier-label { color: var(--red-dark); }
+
+  @media (max-width: 600px) {
+    .var-header, .var-row { grid-template-columns: 1fr; }
+    .score-header, .score-row { grid-template-columns: 28px 1fr 50px; }
+    .score-why { display: none; }
+    .transfer-grid { grid-template-columns: repeat(3, 1fr); }
+    .overrated-row { grid-template-columns: 1fr; }
+    .or-left { border-right: none; border-bottom: 0.5px solid var(--border-light); }
+    .score-tiers { grid-template-columns: 1fr; }
+  }
+
+  /* Team scorecard styles */
+  .team-pill.clickable-team { cursor: pointer; transition: background 0.15s, color 0.15s; }
+  .team-pill.clickable-team:hover { background: var(--teal-mid); color: #fff; }
+  .team-selector { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+  .team-sel-btn { padding: 7px 16px; font-size: 13px; border: 0.5px solid var(--border-medium); background: transparent; color: var(--text-secondary); border-radius: var(--radius-md); cursor: pointer; font-family: inherit; transition: all 0.15s; }
+  .team-sel-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .team-sel-btn.active { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal-mid); font-weight: 500; }
+  .team-card { display: none; }
+  .team-card.active { display: block; }
+  .team-header-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .team-name-lg { font-size: 20px; font-weight: 500; color: var(--text-primary); }
+  .team-record { font-size: 13px; color: var(--text-secondary); }
+  .team-seed { font-size: 12px; color: var(--text-tertiary); }
+  .team-score-total { display: flex; align-items: center; gap: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); padding: 10px 16px; margin-bottom: 1.25rem; }
+  .team-score-num { font-size: 28px; font-weight: 500; }
+  .team-score-label { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+  .team-score-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; margin-left: auto; }
+  .badge-elite { background: var(--green-light); color: var(--green-dark); }
+  .badge-sweet16 { background: var(--amber-light); color: var(--amber-dark); }
+  .badge-bubble { background: var(--red-light); color: var(--red-dark); }
+  .tcard-row { display: grid; grid-template-columns: 24px 1fr 60px 60px; gap: 8px; align-items: start; padding: 9px 0; border-bottom: 0.5px solid var(--border-light); font-size: 13px; }
+  .tcard-row:last-child { border-bottom: none; }
+  .tcard-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .icon-pass { background: var(--green-light); color: var(--green-dark); }
+  .icon-fail { background: var(--red-light); color: var(--red-dark); }
+  .tcard-var { font-weight: 500; color: var(--text-primary); }
+  .tcard-val { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .tcard-pts { font-size: 13px; font-weight: 500; color: var(--teal-mid); text-align: right; }
+  .tcard-max { font-size: 11px; color: var(--text-tertiary); text-align: right; }
+  .tcard-section-head { font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-tertiary); padding: 10px 0 4px; border-bottom: 1px solid var(--border-medium); margin-bottom: 2px; }
+  .rotation-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 6px; margin-bottom: 1.25rem; }
+  .rotation-player { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 7px 10px; font-size: 12px; }
+  .rotation-player .rp-name { font-weight: 500; color: var(--text-primary); }
+  .rotation-player .rp-mpg { color: var(--teal-mid); font-weight: 500; }
+  .rotation-player .rp-detail { color: var(--text-tertiary); font-size: 11px; margin-top: 1px; }
+  .source-note { font-size: 11px; color: var(--text-tertiary); margin-top: 1rem; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>2026 NCAA Elite Eight Roster and Statistical commonalities</h1>
+    <p>A breakdown of the variebles Elite 8 teams have in common, defining why these teams were set apart from the rest.</p>
+    <div class="teams-row">
+      <span class="team-pill clickable-team" onclick="openTeam('illinois', this)" data-team="illinois">Illinois</span>
+      <span class="team-pill clickable-team" onclick="openTeam('iowa', this)" data-team="iowa">Iowa</span>
+      <span class="team-pill clickable-team" onclick="openTeam('arizona', this)" data-team="arizona">Arizona</span>
+      <span class="team-pill clickable-team" onclick="openTeam('purdue', this)" data-team="purdue">Purdue</span>
+      <span class="team-pill clickable-team" onclick="openTeam('michigan', this)" data-team="michigan">Michigan</span>
+      <span class="team-pill clickable-team" onclick="openTeam('tennessee', this)" data-team="tennessee">Tennessee</span>
+      <span class="team-pill clickable-team" onclick="openTeam('duke', this)" data-team="duke">Duke</span>
+      <span class="team-pill clickable-team" onclick="openTeam('uconn', this)">UConn</span>
+    </div>
+    <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px;">Click any team pill to jump to their scorecard, or use the Team scorecards tab</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('exec', this)" data-tab="exec">Summary</button>
+    <button class="tab-btn" onclick="switchTab('vars', this)" data-tab="vars">Variable rankings</button>
+    <button class="tab-btn" onclick="switchTab('transfers', this)" data-tab="transfers">Transfer analysis</button>
+    <button class="tab-btn" onclick="switchTab('checklist', this)" data-tab="checklist">Checklist model</button>
+    <button class="tab-btn" onclick="switchTab('scoring', this)" data-tab="scoring">100-point model</button>
+    <button class="tab-btn" onclick="switchTab('overrated', this)" data-tab="overrated">Overrated vs hidden</button>
+    <button class="tab-btn" onclick="switchTab('stress', this)" data-tab="stress">Stress test</button>
+    <button class="tab-btn" onclick="switchTab('teams', this)" data-tab="teams">Team scorecards</button>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div id="tab-exec" class="tab-content active">
+    <div class="section">
+      <div class="section-label">Executive summary</div>
+      <div class="grid4">
+        <div class="metric-card">
+          <div class="metric-label">Strongest denominator</div>
+          <div class="metric-val">Experience depth</div>
+          <div class="metric-sub">4+ year-3+ players in top-8 rotation</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Second strongest</div>
+          <div class="metric-val">Interior efficiency</div>
+          <div class="metric-sub">2P% ≥ 54% + 6'10+ anchor</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Transfer verdict</div>
+          <div class="metric-val">Proxy variable</div>
+          <div class="metric-sub">Impact transfers matter; count does not</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Most overrated</div>
+          <div class="metric-val">3-point volume</div>
+          <div class="metric-sub">2P% predicts better</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="insight-box">
+          <div class="insight-title">Main Variable FInding</div>
+          All eight 2026 Elite Eight teams share a common structural profile: a deep, experienced rotation, instead of a purely talented one, that is built around interior efficiency, disciplined ball movement(A/TO), and at least one dominant physical ANCHOR at 6'10+. Transfer count alone is uncorrelated with advancement. What matters is whether transferred players are in top-8 minutes and have proven production at their previous school.
+        </div>
+        <div class="insight-box">
+          <div class="insight-title">How Experience Links to Efficiency</div>
+          The two variables that converge most tightly across all eight teams are (1) 4+ players in year 3 or beyond in the top-8 rotation, and (2) a team 2P% at or above 54%. These are not independent: experienced rotations generate higher-percentage looks through better spacing, timing, and paint reads. The corrolation can be simplified as: experience → decision quality → shot quality → 2P%.
+        </div>
+        <div class="insight-box">
+          <div class="insight-title">Best single insight</div>
+          The variable you are ultimately measuring across every category — experience, transfers, depth, size — is <strong>proven college production distributed across the rotation</strong>. Teams that score well on this model are structurally hard to beat because their margin for adversity (foul trouble, off nights, injuries) is thick. Build the model around outputs, not inputs.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VARIABLE RANKINGS -->
+  <div id="tab-vars" class="tab-content">
+    <div class="section">
+      <div class="section-label">All variables — ranked strongest to weakest</div>
+      <div class="card">
+        <div class="var-header">
+          <span>Variable</span>
+          <span>Classification</span>
+          <span>100-pt weight</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">4+ year-3+ players in top-8 rotation</div><div class="var-note">Juniors/seniors/grad transfers in primary minutes. Operationalizes experience depth through the rotation, not just starters.</div></div>
+          <span><span class="badge b-strong">Strong</span></span>
+          <span class="pts">12 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Team 2P% ≥ 54%</div><div class="var-note">Interior shot quality. Proxy for half-court efficiency and paint access. The single most predictive offensive stat.</div></div>
+          <span><span class="badge b-strong">Strong</span></span>
+          <span class="pts">11 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">1 starter at 6'10+ with ≥25 MPG</div><div class="var-note">Physical anchor for rebounding, rim protection, and interior offense. Must be a primary rotation player, not a spot-minute big.</div></div>
+          <span><span class="badge b-strong">Strong</span></span>
+          <span class="pts">10 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">8+ players averaging 10+ MPG</div><div class="var-note">Rotation depth. Allows rest management and matchup-specific deployment. 9+ players signals genuine depth; 7 or fewer risks fatigue in 6-game tournaments.</div></div>
+          <span><span class="badge b-strong">Strong</span></span>
+          <span class="pts">9 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Assist/turnover ratio ≥ 1.50</div><div class="var-note">Ball security and offensive organization under pressure. Measures decision-making quality and ball security simultaneously.</div></div>
+          <span><span class="badge b-strong">Strong</span></span>
+          <span class="pts">9 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">3+ starters at 6'5+</div><div class="var-note">Wing/forward size for switchability, rebounding, and defensive versatility. Counts players in the top-5 minutes.</div></div>
+          <span><span class="badge b-strong">Strong</span></span>
+          <span class="pts">8 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Top scorer usage share ≤ 28%</div><div class="var-note">Balanced scoring. No single point of failure for opponent defense to key on. Isolates teams with genuine multi-threat offenses.</div></div>
+          <span><span class="badge b-strong">Strong</span></span>
+          <span class="pts">7 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">3+ bench players averaging 10+ MPG</div><div class="var-note">Meaningful bench depth. Separates from teams with "starter-and-scrubs" rosters. Overlaps with depth variable — check both separately.</div></div>
+          <span><span class="badge b-strong">Strong</span></span>
+          <span class="pts">6 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Offensive rebound % ≥ 30%</div><div class="var-note">Second-chance points. Correlated with physical size and effort-play intensity. Moderate because not universal across all eight teams.</div></div>
+          <span><span class="badge b-moderate">Moderate</span></span>
+          <span class="pts">5 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Opponent 2P% ≤ 48%</div><div class="var-note">Interior defense quality. The defensive mirror of team 2P%. Rim protection and paint discipline. Moderate — some Elite Eight teams are perimeter-scheme defenses.</div></div>
+          <span><span class="badge b-moderate">Moderate</span></span>
+          <span class="pts">5 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">eFG% ≥ 54%</div><div class="var-note">Overall shooting quality. Correlated with 2P% but adds 3P weighting. Lower weight because it partially overlaps team 2P%.</div></div>
+          <span><span class="badge b-moderate">Moderate</span></span>
+          <span class="pts">4 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">2+ impact transfers in top-8 minutes</div><div class="var-note">Only meaningful if transfer has ≥15 MPG AND proven prior production (10+ PPG or 5+ RPG at prior school). Raw count is irrelevant.</div></div>
+          <span><span class="badge b-moderate">Moderate</span></span>
+          <span class="pts">4 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">FT% ≥ 73%</div><div class="var-note">Late-game execution. Weak on its own but confirms offensive polish. Use as a tiebreaker, not an anchor variable.</div></div>
+          <span><span class="badge b-weak">Weak</span></span>
+          <span class="pts">3 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Top-5 games missed ≤ 5</div><div class="var-note">Lineup continuity and health. Difficult to measure prospectively. Matters but hard to use as a predictive variable before the tournament.</div></div>
+          <span><span class="badge b-weak">Weak</span></span>
+          <span class="pts">3 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">2+ players averaging 3+ assists</div><div class="var-note">Pass-sharing. Partially redundant with assist/turnover ratio. Low additional signal once A/T ratio is already captured.</div></div>
+          <span><span class="badge b-weak">Weak</span></span>
+          <span class="pts">2 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">3P% ≥ 36%</div><div class="var-note">Many Elite Eight teams are mediocre 3-point teams that win inside. 3P% sounds important because media overweights perimeter play. 2P% predicts better.</div></div>
+          <span><span class="badge b-false">False denominator</span></span>
+          <span class="pts">1 pt if ≥37% only</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Total transfer count</div><div class="var-note">Every program at the power-conference level carries 4–7 transfers. No meaningful difference in raw count between Sweet Sixteen teams and first-round exits.</div></div>
+          <span><span class="badge b-false">False denominator</span></span>
+          <span class="pts">0 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Returning starter count (raw)</div><div class="var-note">Does not control for whether returners are actually good. 5 mediocre returning starters is continuity without ceiling.</div></div>
+          <span><span class="badge b-false">False denominator</span></span>
+          <span class="pts">0 pts</span>
+        </div>
+
+        <div class="var-row">
+          <div><div class="var-name">Steals per game</div><div class="var-note">High variance, gamble-dependent. Elite defenses are disciplined and positional, not steal-heavy. Steals correlate with volatility, not defensive quality.</div></div>
+          <span><span class="badge b-false">False denominator</span></span>
+          <span class="pts">0 pts</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSFER ANALYSIS -->
+  <div id="tab-transfers" class="tab-content">
+    <div class="section">
+      <div class="section-label">Transfer analysis — which framing is correct?</div>
+
+      <div class="transfer-grid">
+        <div class="t-card">
+          <div class="t-rank">D</div>
+          <div class="t-label">Raw transfer count</div>
+        </div>
+        <div class="t-card">
+          <div class="t-rank">C</div>
+          <div class="t-label">Continuity (few transfers)</div>
+        </div>
+        <div class="t-card">
+          <div class="t-rank">C+</div>
+          <div class="t-label">Prior proven production</div>
+        </div>
+        <div class="t-card">
+          <div class="t-rank">B</div>
+          <div class="t-label">Experienced rotation depth</div>
+        </div>
+        <div class="t-card winner">
+          <div class="t-rank">A</div>
+          <div class="t-label">Impact transfers in top-8 minutes</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="insight-box">
+          <div class="insight-title">Why raw transfer count is a false denominator</div>
+          Every major program in the portal era carries 4–7 transfers. So do teams that exit in the first round. There is no meaningful difference in raw transfer count between Sweet Sixteen teams and first-round exits at the power-conference level. Transfer count is a measure of roster construction activity, not roster quality.
+        </div>
+        <div class="insight-box">
+          <div class="insight-title">Why continuity alone is not the answer either</div>
+          A team with 5 returning starters who were mediocre last year has high continuity and low ceiling. Continuity matters only when you are returning players who were proven contributors. The more important variable is "returning proven production," instead of a headcount of returners.
+        </div>
+        <div class="insight-box">
+          <div class="insight-title">The correct transfer variable: impact transfers in top-8 minutes</div>
+          What separates Elite Eight programs from bubble teams in the portal era is not how many transfers are on the roster — it is whether transferred players are (a) logging 15+ MPG, (b) filling a structural role gap such as a shot-creating guard on a team with none, or a 6'10+ big on a small roster, and (c) have demonstrable prior production of 10+ PPG or 5+ RPG at their prior school. Teams with 2+ impact transfers fitting these criteria show meaningfully stronger tournament outcomes.
+        </div>
+        <div class="insight-box">
+          <div class="insight-title">Transfer vs experience: the real relationship</div>
+          Transfers are not separate from the experience variable — they are often the mechanism that delivers experienced players. A fifth-year grad transfer with 100+ college starts is an experience asset, not a transfer asset. The underlying variable is always "proven college production in top-8 minutes." Transfers are one pathway to that; returning veterans are another. Experience on the floor is an important variable to consider.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST MODEL -->
+  <div id="tab-checklist" class="tab-content">
+    <div class="section">
+      <div class="section-label">Simple checklist model — 10 variables</div>
+      <p style="font-size:13px; color:var(--text-secondary); margin-bottom:1rem;">A team passing 8+ of 10 checks fits the Elite Eight structural profile. 6–7 checks = bubble/Sweet Sixteen range. Below 6 = unlikely to advance deep.</p>
+      <div class="card">
+
+        <div class="checklist-item">
+          <div class="check-num">1</div>
+          <div>
+            <div class="check-text">8+ players averaging 10+ MPG</div>
+            <div class="check-sub">Threshold for functional depth. 9+ is elite; 8 is solid; 7 or fewer risks fatigue over 6 games.</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">2</div>
+          <div>
+            <div class="check-text">3+ bench players (non-starters) averaging 10+ MPG</div>
+            <div class="check-sub">Bench viability. Starts ≠ bench. Must check both separately from the total depth variable.</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">3</div>
+          <div>
+            <div class="check-text">4+ players in year 3+ of college in the top-8 rotation</div>
+            <div class="check-sub">Experience backbone. Count all players logging 10+ MPG who are juniors, seniors, or grad students. Transfers count if they are year 3+ in college regardless of program.</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">4</div>
+          <div>
+            <div class="check-text">1 starter at 6'10+ logging ≥25 MPG</div>
+            <div class="check-sub">Physical anchor. Must be a primary rotation player, not a spot-minute big. Tied directly to 2P% performance and defensive rebounding.</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">5</div>
+          <div>
+            <div class="check-text">3+ starters at 6'5 or taller</div>
+            <div class="check-sub">Wing/forward size. Counts players in the top-5 minutes, not purely the scholarship designation of "starter."</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">6</div>
+          <div>
+            <div class="check-text">Team 2P% ≥ 54%</div>
+            <div class="check-sub">Interior efficiency. The single most predictive offensive stat for Elite Eight caliber. Treat as ±2% — direction matters more than the exact threshold.</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">7</div>
+          <div>
+            <div class="check-text">Assist/turnover ratio ≥ 1.50</div>
+            <div class="check-sub">Offensive organization. Measures both decision-making quality and ball security simultaneously. Drops under tournament defensive pressure on ball-dominant teams.</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">8</div>
+          <div>
+            <div class="check-text">Top scorer usage share ≤ 28%</div>
+            <div class="check-sub">No single point of offensive failure. Isolates teams with genuine multi-threat offenses that do not collapse when one player is taken away.</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">9</div>
+          <div>
+            <div class="check-text">Opponent 2P% ≤ 48%</div>
+            <div class="check-sub">Interior defense quality. The defensive mirror of variable 6. Rim protection and paint discipline. Scales with the quality of the 6'10+ anchor.</div>
+          </div>
+        </div>
+
+        <div class="checklist-item">
+          <div class="check-num">10</div>
+          <div>
+            <div class="check-text">0–1 players with usage rate ≥ 30%</div>
+            <div class="check-sub">Structural balance check. Teams with 2+ ball-dominant guards tend to fracture under tournament pressure defense. One high-usage star is fine, but more than that can become a liability.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 100-POINT MODEL -->
+  <div id="tab-scoring" class="tab-content">
+    <div class="section">
+      <div class="section-label">100-point weighted scoring model</div>
+
+      <div class="score-tiers">
+        <div class="tier-card gold">
+          <div class="tier-range">75–100</div>
+          <div class="tier-label">Elite Eight structural profile</div>
+        </div>
+        <div class="tier-card silver">
+          <div class="tier-range">55–74</div>
+          <div class="tier-label">Legitimate tournament team</div>
+        </div>
+        <div class="tier-card bronze">
+          <div class="tier-range">Below 55</div>
+          <div class="tier-label">Bubble / one-and-done risk</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="score-header">
+          <span>#</span>
+          <span>Variable + threshold</span>
+          <span style="text-align:right">Max pts</span>
+          <span style="text-align:right">Category</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">1</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">4+ year-3+ players in top-8 rotation</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:100%; background:#1D9E75;"></div></div>
+            <div class="score-sub">12 pts for 5+ players | 9 pts for exactly 4 | 4 pts for 3 | 0 pts below 3</div>
+          </div>
+          <span class="score-pts">12</span>
+          <span class="score-why">Experience depth</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">2</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Team 2P%</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:92%; background:#1D9E75;"></div></div>
+            <div class="score-sub">11 pts for ≥56% | 8 pts for ≥54% | 4 pts for ≥52% | 0 pts below 52%</div>
+          </div>
+          <span class="score-pts">11</span>
+          <span class="score-why">Interior efficiency</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">3</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">6'10+ starter at ≥25 MPG</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:83%; background:#1D9E75;"></div></div>
+            <div class="score-sub">10 pts for 6'11+ starter | 7 pts for 6'10 starter | 3 pts for 6'10 at 15–25 MPG | 0 pts if none</div>
+          </div>
+          <span class="score-pts">10</span>
+          <span class="score-why">Physical anchor</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">4</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Players averaging 10+ MPG</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:75%; background:#1D9E75;"></div></div>
+            <div class="score-sub">9 pts for 9+ players | 6 pts for 8 | 3 pts for 7 | 0 pts below 7</div>
+          </div>
+          <span class="score-pts">9</span>
+          <span class="score-why">Rotation depth</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">5</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Assist/turnover ratio</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:75%; background:#1D9E75;"></div></div>
+            <div class="score-sub">9 pts for ≥1.70 | 6 pts for ≥1.50 | 3 pts for ≥1.35 | 0 pts below 1.35</div>
+          </div>
+          <span class="score-pts">9</span>
+          <span class="score-why">Ball organization</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">6</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Starters at 6'5+</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:67%; background:#1D9E75;"></div></div>
+            <div class="score-sub">8 pts for 4+ starters | 5 pts for 3 | 2 pts for 2 | 0 pts for ≤1</div>
+          </div>
+          <span class="score-pts">8</span>
+          <span class="score-why">Wing size</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">7</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Top scorer usage share</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:58%; background:#5DCAA5;"></div></div>
+            <div class="score-sub">7 pts for ≤25% | 5 pts for ≤28% | 2 pts for ≤32% | 0 pts above 32%</div>
+          </div>
+          <span class="score-pts">7</span>
+          <span class="score-why">Scoring balance</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">8</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Bench players at 10+ MPG</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:50%; background:#5DCAA5;"></div></div>
+            <div class="score-sub">6 pts for 4+ bench players | 4 pts for 3 | 2 pts for 2 | 0 pts for ≤1. Note: overlaps with variable 4 — do not award full points on both if the same players are being counted twice.</div>
+          </div>
+          <span class="score-pts">6</span>
+          <span class="score-why">Bench depth</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">9</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Offensive rebound %</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:42%; background:#5DCAA5;"></div></div>
+            <div class="score-sub">5 pts for ≥33% | 3 pts for ≥30% | 1 pt for ≥27% | 0 pts below 27%</div>
+          </div>
+          <span class="score-pts">5</span>
+          <span class="score-why">Second chances</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">10</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Opponent 2P% allowed</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:42%; background:#5DCAA5;"></div></div>
+            <div class="score-sub">5 pts for ≤46% | 3 pts for ≤48% | 1 pt for ≤50% | 0 pts above 50%</div>
+          </div>
+          <span class="score-pts">5</span>
+          <span class="score-why">Interior defense</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">11</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">eFG%</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:33%; background:#9FE1CB;"></div></div>
+            <div class="score-sub">4 pts for ≥56% | 2 pts for ≥54% | 0 pts below. Partially overlaps 2P% — lower weight intentional to avoid double-counting interior efficiency.</div>
+          </div>
+          <span class="score-pts">4</span>
+          <span class="score-why">Shot quality</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">12</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Impact transfers in top-8 minutes</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:33%; background:#9FE1CB;"></div></div>
+            <div class="score-sub">4 pts for 2+ qualifying (must have ≥15 MPG + prior 10+ PPG or 5+ RPG at prior school) | 2 pts for 1 qualifying | 0 pts for raw count only</div>
+          </div>
+          <span class="score-pts">4</span>
+          <span class="score-why">Portal quality</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">13</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">FT%</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:25%; background:#9FE1CB;"></div></div>
+            <div class="score-sub">3 pts for ≥76% | 1 pt for ≥73% | 0 pts below. Use as tiebreaker, not an anchor variable. Reflects late-game execution under pressure.</div>
+          </div>
+          <span class="score-pts">3</span>
+          <span class="score-why">Late-game polish</span>
+        </div>
+
+        <div class="score-row">
+          <div class="rank-num">14</div>
+          <div>
+            <div style="font-weight:500; font-size:13px;">Top-5 games missed</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:25%; background:#9FE1CB;"></div></div>
+            <div class="score-sub">3 pts for ≤3 total games missed by top-5 players | 1 pt for ≤6 | 0 pts above 6. Hard to use prospectively; apply retrospectively or at tournament time.</div>
+          </div>
+          <span class="score-pts">3</span>
+          <span class="score-why">Continuity/health</span>
+        </div>
+
+        <div class="score-total">
+          <span style="font-size:13px; font-weight:500;">Total available</span>
+          <span style="font-size:22px; font-weight:500; color:#0F6E56;">100 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERRATED VS HIDDEN -->
+  <div id="tab-overrated" class="tab-content">
+    <div class="section">
+      <div class="section-label">Overrated by media and analysts vs what actually predicts</div>
+
+      <div class="overrated-row">
+        <div class="or-left"><div class="or-label">Overrated</div><div class="or-text">3-point shooting volume and 3PA rate</div></div>
+        <div class="or-right"><div class="or-label">What matters instead</div><div class="or-text">2P% and interior shot generation. Many Elite Eight teams shoot 33–35% from three but win inside where variance is lower.</div></div>
+      </div>
+
+      <div class="overrated-row">
+        <div class="or-left"><div class="or-label">Overrated</div><div class="or-text">Star player scoring average (PPG of top scorer)</div></div>
+        <div class="or-right"><div class="or-label">What matters instead</div><div class="or-text">Usage distribution. A 24 PPG scorer with 32% usage is a structural liability when tournament defenses game-plan to take them away.</div></div>
+      </div>
+
+      <div class="overrated-row">
+        <div class="or-left"><div class="or-label">Overrated</div><div class="or-text">Total transfer count ("deep portal class")</div></div>
+        <div class="or-right"><div class="or-label">What matters instead</div><div class="or-text">Whether transfers are in top-8 minutes with proven prior production. 7 transfers who log 8 MPG each are structurally irrelevant.</div></div>
+      </div>
+
+      <div class="overrated-row">
+        <div class="or-left"><div class="or-label">Overrated</div><div class="or-text">Returning starter count (raw continuity)</div></div>
+        <div class="or-right"><div class="or-label">What matters instead</div><div class="or-text">Returning proven production. 5 mediocre returning starters is worse than 2 elite returners plus 3 impact additions.</div></div>
+      </div>
+
+      <div class="overrated-row">
+        <div class="or-left"><div class="or-label">Overrated</div><div class="or-text">Steals per game as a defensive quality proxy</div></div>
+        <div class="or-right"><div class="or-label">What matters instead</div><div class="or-text">Opponent 2P%. Elite defenses are disciplined and positional, not gamble-heavy. Steals correlate with defensive volatility, not quality.</div></div>
+      </div>
+
+      <div class="overrated-row">
+        <div class="or-left"><div class="or-label">Overrated</div><div class="or-text">Overall ORtg/DRtg in absolute terms</div></div>
+        <div class="or-right"><div class="or-label">What matters instead</div><div class="or-text">Efficiency specifically against Quad 1 opponents. Ratings inflated by weak schedules mislead badly. A top-10 ORtg built on cupcakes is meaningless.</div></div>
+      </div>
+
+      <div class="overrated-row">
+        <div class="or-left"><div class="or-label">Overrated</div><div class="or-text">Veteran starting five (experience in starters only)</div></div>
+        <div class="or-right"><div class="or-label">What matters instead</div><div class="or-text">Experience depth through the full rotation. A veteran starting five with a freshman-heavy bench collapses structurally under foul trouble in tournament games.</div></div>
+      </div>
+
+      <div class="overrated-row">
+        <div class="or-left"><div class="or-label">Overrated</div><div class="or-text">Regular season wins and conference record</div></div>
+        <div class="or-right"><div class="or-label">What matters instead</div><div class="or-text">Performance metrics against Quad 1 opponents specifically. A 28-4 team from a weak schedule is structurally untested at Elite Eight intensity.</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STRESS TEST -->
+  <div id="tab-stress" class="tab-content">
+    <div class="section">
+      <div class="section-label"></div>
+      <div class="card">
+
+        <div class="stress-row">
+          <div class="stress-q">What may be specific to 2026 only?</div>
+          <div class="stress-a">The 2026 Elite Eight was more Big Ten–heavy than usual (4 of 8 teams: Illinois, Iowa, Michigan, Purdue). This inflates variables correlated with Big Ten programs such as size, interior play, and defensive discipline. Teams from run-and-gun or 3-point-dependent conferences may be underrepresented in the variable section because they are underrepresented in this years tournement.</div>
+        </div>
+
+        <div class="stress-row">
+          <div class="stress-q">What likely holds over the last decade?</div>
+          <div class="stress-a">Experience depth (year-3+ players in top 8) has been one of the strongest predictors of tournament advancement since 2014. The NCAA Tournament consistently favors older rosters. Rotation depth (8+ players at 10 MPG) and assist/turnover ratio are similarly stable across years. Physical size at center (6'10+) has appeared in most deep tournament runs for 10+ years regardless of era or conference affiliation.</div>
+        </div>
+
+        <div class="stress-row">
+          <div class="stress-q">What might change in the portal/NIL era?</div>
+          <div class="stress-a">With the portal, it is very difficult, structurally, to maintain roster continuity from year to year. This means the "returning starters" variable depreciates faster and the "impact transfers in top minutes" variable becomes more important each year. Additionally, NIL has compressed the talent gap somewhat between power programs and well-funded mid-majors. Expect occasional mid-major Elite Eight appearances as mid-major programs that meet this structural profile gain access to transfer market talent that previously went exclusively to power conferences.</div>
+        </div>
+
+        <div class="stress-row">
+          <div class="stress-q">What variables risk overfitting to 2026?</div>
+          <div class="stress-a">The 6'5+ starter threshold is the most overfitting-prone. Three of the 2026 Elite Eight teams had exceptionally tall wing rosters due to unique recruiting classes. At scale across multiple years, 2 starters at 6'5+ may be a better signal, but 2026 it holds true. Similarly, the specific 54% 2P% threshold should carry a ±2% tolerance — the signal is "high interior efficiency," not that a 53.9% team is structurally different from a 54.1% team. I'm just trying to give some forgivness here.</div>
+        </div>
+
+
+
+      </div>
+
+      <div class="big-insight">
+        <div class="big-insight-head">Best single insight from this analysis</div>
+        <div class="big-insight-body">The variable that looks most like experience and transfers combined — but is actually neither of them — is <strong>proven college production distributed across the rotation</strong>. A team with 5 year-3+ players who have each logged 50+ college starts, regardless of whether they transferred or stayed, and who are all playing 15+ MPG, is structurally more durable in a 6-game tournament than any other roster configuration you can build. The mistake I have seen many analysts is measuring <em>inputs</em> (transfer count, returning starters, recruiting rankings) instead of what truely affects composition, <em>outputs</em> (minutes of proven production distributed across 8+ players). I tried to focus this model around outputs because they are a clear signal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM SCORECARDS -->
+  <div id="tab-teams" class="tab-content">
+    <div class="section">
+      <div class="section-label">2026 Elite Eight — Team Scorecards</div>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1rem;">Each team scored against the 100-point model. ✓ = threshold met, ✗ = threshold missed.</p>
+
+      <div class="team-selector">
+        <button class="team-sel-btn" onclick="showTeam('illinois', this)" data-team="illinois">Illinois · 78</button>
+        <button class="team-sel-btn" onclick="showTeam('iowa', this)" data-team="iowa">Iowa · 66</button>
+        <button class="team-sel-btn" onclick="showTeam('arizona', this)" data-team="arizona">Arizona · 76</button>
+        <button class="team-sel-btn" onclick="showTeam('purdue', this)" data-team="purdue">Purdue · 78</button>
+        <button class="team-sel-btn" onclick="showTeam('michigan', this)" data-team="michigan">Michigan · 91</button>
+        <button class="team-sel-btn" onclick="showTeam('tennessee', this)" data-team="tennessee">Tennessee · 63</button>
+        <button class="team-sel-btn" onclick="showTeam('duke', this)" data-team="duke">Duke · 73</button>
+        <button class="team-sel-btn active" onclick="showTeam('uconn', this)">UConn · 69</button>
+      </div>
+
+
+      <!-- ILLINOIS -->
+      <div class="team-card" id="tc-illinois">
+        <div class="team-header-row">
+          <span class="team-name-lg">Illinois</span>
+          <span class="team-record">28-9 · Final Four</span>
+          <span class="team-seed">#5 seed · Big Ten</span>
+        </div>
+        <div class="team-score-total">
+          <div><div class="team-score-num" style="color:var(--teal-dark);">78</div></div>
+          <div class="team-score-label">out of 100<br>Adj ORtg 131.2 (#2) · Adj DRtg 99.1 (#28) · Opp 2P% 47.7%</div>
+          <span class="team-score-badge badge-elite">Elite Eight profile</span>
+        </div>
+        <div class="card">
+          <div class="tcard-section-head">Rotation — 8 players at 10+ MPG (Fox Sports verified)</div>
+          <div class="rotation-grid">
+            <div class="rotation-player"><div class="rp-name">Keaton Wagler <span class="rp-mpg">33.7</span></div><div class="rp-detail">G · Fr · 17.9 ppg</div></div>
+            <div class="rotation-player"><div class="rp-name">Kylan Boswell <span class="rp-mpg">30.3</span></div><div class="rp-detail">G · Sr · 13.2 ppg</div></div>
+            <div class="rotation-player"><div class="rp-name">David Mirkovic <span class="rp-mpg">29.3</span></div><div class="rp-detail">F · Fr · 13.4 ppg</div></div>
+            <div class="rotation-player"><div class="rp-name">Andrej Stojakovic <span class="rp-mpg">26.3</span></div><div class="rp-detail">G · So · 13.4 ppg</div></div>
+            <div class="rotation-player"><div class="rp-name">Tomislav Ivisic <span class="rp-mpg">25.2</span></div><div class="rp-detail">C · 7'1" · Jr · 10.2 ppg · GS:32</div></div>
+            <div class="rotation-player"><div class="rp-name">Ben Humrichous <span class="rp-mpg">22.7</span></div><div class="rp-detail">F · Sr · 6.1 ppg</div></div>
+            <div class="rotation-player"><div class="rp-name">Jake Davis <span class="rp-mpg">20.4</span></div><div class="rp-detail">F · R-Jr · 5.8 ppg</div></div>
+            <div class="rotation-player"><div class="rp-name">Zvonimir Ivisic <span class="rp-mpg">17.8</span></div><div class="rp-detail">F/C · 7'2" · Jr · 6.6 ppg · GS:4</div></div>
+          </div>
+          <div class="tcard-section-head">Variable scorecard</div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Boswell (Sr), T.Ivisic (Jr), Humrichous (Sr), J.Davis (R-Jr), Z.Ivisic (Jr) = 5 players</div></div><span class="tcard-pts">12</span><span class="tcard-max">/12</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">High 3-point volume team; est. 2P% ~52% — below 54% threshold</div></div><span class="tcard-pts">4</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Tomislav Ivisic 7'1" · 25.2 MPG · GS:32 · 6'11+ starter = 10 pts</div></div><span class="tcard-pts">10</span><span class="tcard-max">/10</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">8 players confirmed — 6 pts (8-player tier)</div></div><span class="tcard-pts">6</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">14.7 APG / 8.6 TPG = 1.71 — ≥1.70 = 9 pts</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Starters at 6'5+</div><div class="tcard-val">T.Ivisic 7'1", Z.Ivisic 7'2", Mirkovic 6'9", Stojakovic 6'7", Humrichous 6'9", Wagler 6'5" = 6 starters at 6'5+</div></div><span class="tcard-pts">8</span><span class="tcard-max">/8</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Top scorer usage share</div><div class="tcard-val">Wagler USG% 24.9% — ≤25% = 7 pts</div></div><span class="tcard-pts">7</span><span class="tcard-max">/7</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">J.Davis (GS:0, R-Jr), Z.Ivisic (GS:4, Jr) = 2 clear bench + Humrichous/Davis rotation — 3 qualified bench players = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/6</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">38.8% OR% — ≥33% = 5 pts (3rd nationally)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">47.7% — ≤48% = 3 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">3</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 59.4% — high 3-point volume; eFG% below 54% threshold = 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Stojakovic (Stanford/Cal), Z.Ivisic (Arkansas) both qualify — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">FT%</div><div class="tcard-val">79.3% — ≥76% = 3 pts (fightingillini.com confirmed)</div></div><span class="tcard-pts">3</span><span class="tcard-max">/3</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Boswell missed ~7 games (hand fracture) — 1 pt (≤6 threshold missed)</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+        </div>
+        <p class="source-note">Score: 12+4+10+6+9+8+7+4+5+3+2+4+3+1 = <strong>78</strong>. Heights from fightingillini.com official (T.Ivisic 7'1", Z.Ivisic 7'2"). OR% and opp 2P% TeamRankings. FT% fightingillini.com. Adj ORtg/DRtg Bart Torvik.</p>
+      </div>
+
+      <!-- IOWA -->
+      <div class="team-card" id="tc-iowa">
+        <div class="team-header-row">
+          <span class="team-name-lg">Iowa</span>
+          <span class="team-record">24–13 · Elite Eight exit</span>
+          <span class="team-seed">#9 seed · Big Ten</span>
+        </div>
+        <div class="team-score-total">
+          <div><div class="team-score-num" style="color:var(--amber-dark);">69</div></div>
+          <div class="team-score-label">out of 100<br>Adj ORtg 119.5 (#24) · Adj DRtg 97.8 (#22) · Opp 2P% 54.3%</div>
+          <span class="team-score-badge badge-sweet16">Tournament-capable</span>
+        </div>
+        <div class="card">
+          <div class="tcard-section-head">Rotation — 9 players at 10+ MPG (Fox Sports verified)</div>
+          <div class="rotation-grid">
+            <div class="rotation-player"><div class="rp-name">Bennett Stirtz <span class="rp-mpg">37.5</span></div><div class="rp-detail">G · 6'4" · Sr · 20.0 ppg · GS:33</div></div>
+            <div class="rotation-player"><div class="rp-name">Cam Manyawu <span class="rp-mpg">18.9</span></div><div class="rp-detail">F · 6'9" · Jr · 5.5 ppg · GS:33 ★starter</div></div>
+            <div class="rotation-player"><div class="rp-name">Tavion Banks <span class="rp-mpg">23.2</span></div><div class="rp-detail">G/F · 6'7" · Sr · 10.5 ppg · GS:31 ★starter</div></div>
+            <div class="rotation-player"><div class="rp-name">Kael Combs <span class="rp-mpg">25.8</span></div><div class="rp-detail">G · 6'4" · Jr · 8.6 ppg · GS:31 ★starter</div></div>
+            <div class="rotation-player"><div class="rp-name">Cooper Koch <span class="rp-mpg">27.5</span></div><div class="rp-detail">F · 6'8" · Fr · 7.7 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Alvaro Folgueiras <span class="rp-mpg">20.9</span></div><div class="rp-detail">F · 6'10" · Jr · 8.4 ppg · GS:1</div></div>
+            <div class="rotation-player"><div class="rp-name">Isaia Howard <span class="rp-mpg">18.8</span></div><div class="rp-detail">G · 6'5" · So · 4.3 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Tate Sage <span class="rp-mpg">16.0</span></div><div class="rp-detail">G · 6'7" · Fr · 4.0 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Brendan Hausen <span class="rp-mpg">10.1</span></div><div class="rp-detail">G · 6'4" · Sr · 2.7 ppg · GS:0</div></div>
+          </div>
+          <div class="tcard-section-head">Variable scorecard</div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Stirtz (Sr), Banks (Sr), Hausen (Sr), Combs (Jr), Folgueiras (Jr) = 5 players — 12 pts</div></div><span class="tcard-pts">12</span><span class="tcard-max">/12</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">Manyawu 63.0% FG, Banks 54.8% — team 2P% ~54–55% — ≥54% tier = 8 pts</div></div><span class="tcard-pts">8</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Folgueiras 6'10" · 20.9 MPG · GS:1 (bench) — 15–25 MPG bench tier = 3 pts</div></div><span class="tcard-pts">3</span><span class="tcard-max">/10</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">9 players confirmed — 9 pts (9+ tier, elite depth)</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">15.3 APG / 9.0 TPG = 1.70 — ≥1.70 = 9 pts</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Starters at 6'5+</div><div class="tcard-val">Starters: Stirtz 6'4"✗, Manyawu 6'9"✓, Banks 6'7"✓, Combs 6'4"✗ = 2 starters at 6'5+ — 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/8</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Top scorer usage share</div><div class="tcard-val">Stirtz USG% 27.0% — ≤28% = 5 pts</div></div><span class="tcard-pts">5</span><span class="tcard-max">/7</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Koch (GS:0), Folgueiras (GS:1), Howard (GS:0), Sage (GS:0), Hausen (GS:0) = 5 bench players — 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/6</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">32.7% OR% — ≥30% = 3 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">3</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">54.3% — above 50% = 0 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">0</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 60.6% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Combs (Wyoming→Drake→Iowa), Folgueiras (Robert Morris) — 2 qualifying = 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">FT%</div><div class="tcard-val">76.9% — ≥76% = 3 pts (Iowa official athletics confirmed)</div></div><span class="tcard-pts">3</span><span class="tcard-max">/3</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Stirtz played all 37 games; McCollum played all — 3 pts</div></div><span class="tcard-pts">3</span><span class="tcard-max">/3</span></div>
+        </div>
+        <p class="source-note">Score: 12+8+3+9+9+2+5+6+3+0+4+2+3+3 = <strong>66</strong>. Iowa's gaps: only 2 starters at 6'5+ (small-ball system), no opp 2P% defense (54.3%, worst in E8), anchor only 3 pts (Folgueiras bench). Reached E8 on elite A/T ratio (1.70), 9-deep rotation, and McCollum system. Heights/GS from Fox Sports and hawkeyesports.com. OR%/opp 2P% TeamRankings. FT% Iowa official athletics.</p>
+      </div>
+
+      <!-- ARIZONA -->
+      <div class="team-card" id="tc-arizona">
+        <div class="team-header-row">
+          <span class="team-name-lg">Arizona</span>
+          <span class="team-record">39-3 · Final Four exit</span>
+          <span class="team-seed">#1 seed · Big 12</span>
+        </div>
+        <div class="team-score-total">
+          <div><div class="team-score-num" style="color:var(--teal-dark);">76</div></div>
+          <div class="team-score-label">out of 100<br>Adj ORtg 129.8 (#4) · Adj DRtg 90.0 (#3) · Opp 2P% 44.2%</div>
+          <span class="team-score-badge badge-sweet16">Tournament-capable</span>
+        </div>
+        <div class="card">
+          <div class="tcard-section-head">Rotation — 8 players at 10+ MPG (Fox Sports verified)</div>
+          <div class="rotation-grid">
+            <div class="rotation-player"><div class="rp-name">Jaden Bradley <span class="rp-mpg">29.9</span></div><div class="rp-detail">G · 6'3" · Sr · 13.9 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Brayden Burries <span class="rp-mpg">29.8</span></div><div class="rp-detail">G/F · 6'4" · Fr · 15.5 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Koa Peat <span class="rp-mpg">27.8</span></div><div class="rp-detail">F · 6'8" · Fr · 14.3 ppg · GS:36</div></div>
+            <div class="rotation-player"><div class="rp-name">Ivan Kharchenkov <span class="rp-mpg">27.3</span></div><div class="rp-detail">G/F · 6'8" · Fr · 10.1 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Motiejus Krivas <span class="rp-mpg">24.8</span></div><div class="rp-detail">C · 7'2" · Jr · 10.6 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Tobe Awaka <span class="rp-mpg">21.5</span></div><div class="rp-detail">F/C · 6'8" · Sr · 9.6 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Anthony Dell'Orso <span class="rp-mpg">21.6</span></div><div class="rp-detail">G/F · 6'6" · Sr · 9.0 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Dwayne Aristode <span class="rp-mpg">15.7</span></div><div class="rp-detail">F · 6'8" · Fr · 4.7 ppg · GS:0</div></div>
+          </div>
+          <div class="tcard-section-head">Variable scorecard</div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Bradley (Sr), Awaka (Sr), Dell'Orso (Sr), Krivas (Jr) = 4 players (Burries, Peat, Kharchenkov, Aristode = freshmen)</div></div><span class="tcard-pts">9</span><span class="tcard-max">/12</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">Krivas 58.5%, Awaka 59.1%, Peat 54.2% — team 2P% est. ~58% — ≥56% = 11 pts</div></div><span class="tcard-pts">11</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Krivas 7'2" · 24.8 MPG · GS:39 (full starter, just under 25 MPG cutoff) — 6'11+ starter tier = 7 pts</div></div><span class="tcard-pts">7</span><span class="tcard-max">/10</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">8 players confirmed — 6 pts (8-player tier)</div></div><span class="tcard-pts">6</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">18.2 APG / 11.2 TPG = 1.63 — ≥1.50 = 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Starters at 6'5+</div><div class="tcard-val">Peat 6'8"✓, Krivas 7'2"✓, Awaka 6'8"✓, Kharchenkov 6'8"✓ = 4 starters (Bradley 6'3" and Burries 6'4" do NOT qualify)</div></div><span class="tcard-pts">8</span><span class="tcard-max">/8</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Top scorer usage share</div><div class="tcard-val">Burries USG% 23.3% — ≤25% = 7 pts</div></div><span class="tcard-pts">7</span><span class="tcard-max">/7</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Dell'Orso, Awaka, Aristode off bench = 3 bench players — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/6</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">38.2% OR% — ≥33% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">44.2% — ≤46% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 60.7% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Kharchenkov (international), Dell'Orso (USC) qualify — 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">FT%</div><div class="tcard-val">75.3% — ≥73% = 1 pt (confirmed)</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Peat missed ~9 games — 1 pt (≤6 threshold missed)</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+        </div>
+        <p class="source-note">Score: 9+11+7+6+6+8+7+4+5+5+4+2+1+1 = <strong>76</strong>. Experience variable drops to 9 pts — Arizona's 5 freshmen in the rotation is the structural weakness. Elite on both ends (#4 offense, #3 defense). Bradley 6'3" and Burries 6'4" do not count for the 6'5+ starters variable. Heights from arizonawildcats.com official. OR%/opp 2P% TeamRankings. FT% confirmed.</p>
+      </div>
+
+      <!-- PURDUE -->
+      <div class="team-card" id="tc-purdue">
+        <div class="team-header-row">
+          <span class="team-name-lg">Purdue</span>
+          <span class="team-record">30-9 · Elite Eight exit</span>
+          <span class="team-seed">#2 seed · Big Ten</span>
+        </div>
+        <div class="team-score-total">
+          <div><div class="team-score-num" style="color:var(--teal-dark);">78</div></div>
+          <div class="team-score-label">out of 100<br>Adj ORtg 131.6 (#1) · Adj DRtg 94.2 (#8) · Opp 2P% 53.3%</div>
+          <span class="team-score-badge badge-elite">Elite Eight profile</span>
+        </div>
+        <div class="card">
+          <div class="tcard-section-head">Rotation — 9 players at 10+ MPG (Fox Sports verified)</div>
+          <div class="rotation-grid">
+            <div class="rotation-player"><div class="rp-name">Braden Smith <span class="rp-mpg">33.7</span></div><div class="rp-detail">G · 6'0" · Sr · 14.3 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Fletcher Loyer <span class="rp-mpg">28.3</span></div><div class="rp-detail">G · 6'3" · Sr · 14.1 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Trey Kaufman-Renn <span class="rp-mpg">27.8</span></div><div class="rp-detail">F · 6'9" · Sr · 13.3 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">C.J. Cox <span class="rp-mpg">23.8</span></div><div class="rp-detail">G · 6'3" · So · 7.9 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Oscar Cluff <span class="rp-mpg">23.1</span></div><div class="rp-detail">C · 6'11" · Sr · 10.1 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Gicarri Harris <span class="rp-mpg">16.7</span></div><div class="rp-detail">G · 6'3" · So · 5.2 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Daniel Jacobsen <span class="rp-mpg">15.5</span></div><div class="rp-detail">C · 7'4" · So · 6.9 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Omer Mayer <span class="rp-mpg">14.9</span></div><div class="rp-detail">G · 6'5" · Fr · 6.1 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Jack Benter <span class="rp-mpg">14.5</span></div><div class="rp-detail">G · 6'4" · Fr · 4.8 ppg · GS:0</div></div>
+          </div>
+          <div class="tcard-section-head">Variable scorecard</div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Smith (Sr), Loyer (Sr), KTR (Sr), Cluff (Sr) = exactly 4 year-3+ players — 9 pts</div></div><span class="tcard-pts">9</span><span class="tcard-max">/12</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">Cluff 72.1%, KTR 56.5% — team 2P% est. ~57% — ≥56% = 11 pts</div></div><span class="tcard-pts">11</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Cluff 6'11" · 23.1 MPG · GS:39 (full starter) — 6'11+ starter tier = 7 pts</div></div><span class="tcard-pts">7</span><span class="tcard-max">/10</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">9 players confirmed — 9 pts (9+ tier, elite depth)</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">19.6 APG / 8.6 TPG = 2.28 — ≥1.70 = 9 pts (best in E8)</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Starters at 6'5+</div><div class="tcard-val">KTR 6'9"✓, Cluff 6'11"✓, Jacobsen 7'4"✓ = 3 starters (Smith 6'0", Loyer 6'3", Cox 6'3" do NOT qualify) — 5 pts</div></div><span class="tcard-pts">5</span><span class="tcard-max">/8</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Top scorer usage share</div><div class="tcard-val">Smith USG% 23.2% — ≤25% = 7 pts</div></div><span class="tcard-pts">7</span><span class="tcard-max">/7</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Harris, Jacobsen, Mayer, Benter all off bench = 4+ bench players — 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/6</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">35.0% OR% — ≥33% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">53.3% — above 50% = 0 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">0</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 60.7% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Cluff (Australian portal), Mayer (Israeli pro) qualify — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">FT%</div><div class="tcard-val">74.6% — ≥73% = 1 pt (theScore confirmed)</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">KTR missed ~10 games with injury — 1 pt</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+        </div>
+        <p class="source-note">Score: 9+11+7+9+9+5+7+6+5+0+4+4+1+1 = <strong>78</strong>. Purdue's gaps: only 4 yr-3+ (9 not 12 pts) and interior defense (opp 2P% 53.3% worst in field). #1 offense nationally. Heights from purduesports.com — Smith 6'0", Loyer 6'3", Cox 6'3" do not count for 6'5+ variable. OR%/opp 2P% TeamRankings. FT% theScore confirmed.</p>
+      </div>
+
+      <!-- MICHIGAN -->
+      <div class="team-card" id="tc-michigan">
+        <div class="team-header-row">
+          <span class="team-name-lg">Michigan</span>
+          <span class="team-record">37-3 · National Champion</span>
+          <span class="team-seed">#1 seed · Big Ten</span>
+        </div>
+        <div class="team-score-total">
+          <div><div class="team-score-num" style="color:var(--green-dark);">91</div></div>
+          <div class="team-score-label">out of 100<br>Adj ORtg 128.4 (#5) · Adj DRtg 89.0 (#1) · Opp 2P% 43.8%</div>
+          <span class="team-score-badge badge-elite">Elite Eight profile</span>
+        </div>
+        <div class="card">
+          <div class="tcard-section-head">Rotation — 9 players at 10+ MPG)</div>
+          <div class="rotation-grid">
+            <div class="rotation-player"><div class="rp-name">Yaxel Lendeborg <span class="rp-mpg">30.2</span></div><div class="rp-detail">F · 6'9" · Gr · 15.1 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Elliot Cadeau <span class="rp-mpg">27.3</span></div><div class="rp-detail">G · 6'1" · Jr · 11.2 ppg · GS:34</div></div>
+            <div class="rotation-player"><div class="rp-name">Morez Johnson Jr. <span class="rp-mpg">25.1</span></div><div class="rp-detail">F · 6'10" · Jr · 8.5 ppg · GS:34</div></div>
+            <div class="rotation-player"><div class="rp-name">Aday Mara <span class="rp-mpg">23.1</span></div><div class="rp-detail">C · 7'3" · Jr · 9.1 ppg · GS:~5</div></div>
+            <div class="rotation-player"><div class="rp-name">Trey McKenney <span class="rp-mpg">21.6</span></div><div class="rp-detail">G · 6'4" · Fr · 9.9 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Roddy Gayle Jr. <span class="rp-mpg">20.5</span></div><div class="rp-detail">G/F · 6'5" · Sr · 7.4 ppg · GS:34</div></div>
+            <div class="rotation-player"><div class="rp-name">Nimari Burnett <span class="rp-mpg">19.4</span></div><div class="rp-detail">G · 6'5" · Gr · 8.3 ppg · GS:34</div></div>
+            <div class="rotation-player"><div class="rp-name">L.J. Cason <span class="rp-mpg">18.6</span></div><div class="rp-detail">G · 6'3" · So · 7.9 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Will Tschetter <span class="rp-mpg">13.7</span></div><div class="rp-detail">F · 6'8" · Gr · 5.2 ppg · GS:0</div></div>
+          </div>
+          <div class="tcard-section-head">Variable scorecard</div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Lendeborg (Sr), Cadeau (Jr), Johnson (Jr), Mara (Jr), Gayle (Sr), Burnett (Sr), Cason (Sr), Tschetter (5th) = 8</div></div><span class="tcard-pts">12</span><span class="tcard-max">/12</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">Mara TS% 66.6%, Johnson TS% 69.1% — interior dominant; team 2P% est. ~58% — ≥56% = 11 pts</div></div><span class="tcard-pts">11</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Johnson 6'10" · 25.1 MPG · GS:34 (starter) — 6'10 starter tier = 7 pts. Note: Mara 7'3" comes off bench (GS:~5)</div></div><span class="tcard-pts">7</span><span class="tcard-max">/10</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">9 players confirmed — 9 pts (9+ tier, elite depth)</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">20.1 APG / ~11 TPG = ~1.83 — ≥1.70 = 9 pts</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Starters at 6'5+</div><div class="tcard-val">Lendeborg 6'9"✓, Johnson 6'10"✓, Burnett 6'5"✓, Gayle 6'5"✓ = 4 starters (Cadeau 6'1" does NOT qualify; Mara 7'3" is bench)</div></div><span class="tcard-pts">8</span><span class="tcard-max">/8</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Top scorer usage share</div><div class="tcard-val">Lendeborg USG% 20.1% — ≤25% = 7 pts</div></div><span class="tcard-pts">7</span><span class="tcard-max">/7</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">McKenney, Gayle, Burnett, Cason, Tschetter off bench = 4+ bench players — 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/6</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">36.3% OR% — ≥33% = 5 pts</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">43.8% — ≤46% = 5 pts (#1 defense nationally))</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% ~62% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Lendeborg (UAB), Cadeau (UNC), Johnson (Illinois), Mara (UCLA), Gayle (OSU) — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">FT%</div><div class="tcard-val">76.4% — ≥76% = 3 pts </div></div><span class="tcard-pts">3</span><span class="tcard-max">/3</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Lendeborg played all 37; Cason missed ~9 — 1 pt</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+        </div>
+        <p class="source-note">Score: 12+11+7+9+9+8+7+6+5+5+4+4+3+1 = <strong>91</strong>. Johnson is exactly 6'10" (not 6'11+), so anchor = 7 pts not 10 pts. Michigan is still the most complete profile in E8 — #1 defense, 8 year-3+ players, dominant frontcourt. Heights from mgoblue.com official. OR%/opp 2P% TeamRankings. FT% mgoblue.com confirmed.</p>
+      </div>
+
+      <!-- TENNESSEE -->
+      <div class="team-card" id="tc-tennessee">
+        <div class="team-header-row">
+          <span class="team-name-lg">Tennessee</span>
+          <span class="team-record">25–12 · Elite Eight exit</span>
+          <span class="team-seed">#6 seed · SEC</span>
+        </div>
+        <div class="team-score-total">
+          <div><div class="team-score-num" style="color:var(--amber-dark);">63</div></div>
+          <div class="team-score-label">out of 100<br>Adj ORtg 117.4 (#34) · Adj DRtg 93.8 (#7) · Opp 2P% 49.5%</div>
+          <span class="team-score-badge badge-sweet16">Tournament-capable</span>
+        </div>
+        <div class="card">
+          <div class="tcard-section-head">Rotation — 8 players at 10+ MPG (Fox Sports + On3 verified)</div>
+          <div class="rotation-grid">
+            <div class="rotation-player"><div class="rp-name">Ja'Kobi Gillespie <span class="rp-mpg">34.4</span></div><div class="rp-detail">G · 6'3" · Sr · 18.1 ppg · GS:37</div></div>
+            <div class="rotation-player"><div class="rp-name">Nate Ament <span class="rp-mpg">30.2</span></div><div class="rp-detail">F · 6'7" · Fr · 18.2 ppg · GS:37</div></div>
+            <div class="rotation-player"><div class="rp-name">Felix Okpara <span class="rp-mpg">26.6</span></div><div class="rp-detail">F · 6'11" · Sr · 7.7 ppg · GS:37</div></div>
+            <div class="rotation-player"><div class="rp-name">Bishop Boswell <span class="rp-mpg">26.4</span></div><div class="rp-detail">G · 6'4" · So · 6.1 ppg · GS:33</div></div>
+            <div class="rotation-player"><div class="rp-name">Jaylen Carey <span class="rp-mpg">19.0</span></div><div class="rp-detail">F · 6'7" · Jr · 7.8 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">J.P. Estrella <span class="rp-mpg">18.4</span></div><div class="rp-detail">F · 6'8" · R-So · 10.0 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">DeWayne Brown II <span class="rp-mpg">14.7</span></div><div class="rp-detail">F · 6'7" · Fr · 4.8 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Amaree Abram <span class="rp-mpg">12.1</span></div><div class="rp-detail">G · 6'3" · Jr · 3.2 ppg · GS:3</div></div>
+          </div>
+          <div class="tcard-section-head">Variable scorecard</div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Gillespie (Sr), Okpara (Sr), Carey (Jr), Estrella (R-So), Abram (Jr) = 5 yr-3+ players — 12 pts</div></div><span class="tcard-pts">12</span><span class="tcard-max">/12</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">Okpara 55.2%, Estrella 61.6% but guard-heavy offense; team 2P% est. ~52% — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Okpara 6'11" at 26.6 MPG — 6'11+ = 10 pts</div></div><span class="tcard-pts">10</span><span class="tcard-max">/10</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">8 players confirmed — 6 pts (8-player tier)</div></div><span class="tcard-pts">6</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">17.1 APG / 11.2 TPG = 1.53 — ≥1.50 = 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Starters at 6'5+</div><div class="tcard-val">Ament 6'7"✓, Okpara 6'11"✓, Carey 6'7"✓, Estrella 6'8"✓ = 4 starters (Gillespie 6'3" and Boswell 6'4" do not qualify)</div></div><span class="tcard-pts">8</span><span class="tcard-max">/8</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top scorer usage share</div><div class="tcard-val">Ament USG% 29.6% — ≤32% = 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/7</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Carey, Estrella, Brown off bench = 3 bench players — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/6</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">44.1% OR% — ≥33% = 5 pts (#1 nationally, TeamRankings)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">49.5% — ≤50% = 1 pt (TeamRankings confirmed)</div></div><span class="tcard-pts">1</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 55.3% — eFG% below 54% threshold = 0 pts</div></div><span class="tcard-pts">0</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Gillespie (Maryland), Carey (Vanderbilt) both qualify — 2 impact transfers = 4 pts. Note: Lundblade played at Belmont in 2025-26, transferred to Tennessee for 2026-27.</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">FT%</div><div class="tcard-val">69.1% — below 73% threshold = 0 pts (theScore confirmed)</div></div><span class="tcard-pts">0</span><span class="tcard-max">/3</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Phillips season-ending injury — 1 pt</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+        </div>
+        <p class="source-note">Score: 12+4+10+6+6+8+2+4+5+1+0+4+0+1 = <strong>63</strong>. Correction: Lundblade was at Belmont in 2025-26 (transferred to Tennessee for 2026-27). Tennessee's real rotation centered on Gillespie, Ament, Okpara, Boswell, Carey, Estrella, Brown, Abram. Reached E8 on #1 OR% nationally and Okpara's rim presence. Heights from utsports.com official. OR%/opp 2P% TeamRankings. FT% theScore confirmed.</p>
+      </div>
+
+      <!-- DUKE -->
+      <div class="team-card" id="tc-duke">
+        <div class="team-header-row">
+          <span class="team-name-lg">Duke</span>
+          <span class="team-record">35-3 · Elite Eight exit</span>
+          <span class="team-seed">#1 seed · ACC</span>
+        </div>
+        <div class="team-score-total">
+          <div><div class="team-score-num" style="color:var(--amber-dark);">73</div></div>
+          <div class="team-score-label">out of 100<br>Adj ORtg 128.0 (#4) · Adj DRtg 89.1 (#2) · Opp 2P% 46.4%</div>
+          <span class="team-score-badge badge-sweet16">Tournament-capable</span>
+        </div>
+        <div class="card">
+          <div class="tcard-section-head">Rotation — 9 players at 10+ MPG (Fox Sports verified)</div>
+          <div class="rotation-grid">
+            <div class="rotation-player"><div class="rp-name">Cameron Boozer <span class="rp-mpg">33.0</span></div><div class="rp-detail">F · 6'9" · Fr · 22.8 ppg · GS:38</div></div>
+            <div class="rotation-player"><div class="rp-name">Isaiah Evans <span class="rp-mpg">27.8</span></div><div class="rp-detail">G/F · 6'6" · So · 14.7 ppg · GS:38</div></div>
+            <div class="rotation-player"><div class="rp-name">Caleb Foster <span class="rp-mpg">25.2</span></div><div class="rp-detail">G · 6'5" · Jr · 8.5 ppg · GS:~28</div></div>
+            <div class="rotation-player"><div class="rp-name">Dame Sarr <span class="rp-mpg">22.6</span></div><div class="rp-detail">G/F · 6'7" · Fr · 6.2 ppg · GS:38</div></div>
+            <div class="rotation-player"><div class="rp-name">Patrick Ngongba II <span class="rp-mpg">22.4</span></div><div class="rp-detail">C · 6'11" · Jr · 10.7 ppg · GS:38</div></div>
+            <div class="rotation-player"><div class="rp-name">Cayden Boozer <span class="rp-mpg">21.4</span></div><div class="rp-detail">G · 6'4" · Fr · 6.8 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Maliq Brown <span class="rp-mpg">20.0</span></div><div class="rp-detail">F · 6'9" · Sr · 4.8 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Nikolas Khamenia <span class="rp-mpg">19.5</span></div><div class="rp-detail">G/F · 6'8" · Fr · 4.6 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Darren Harris <span class="rp-mpg">10.2</span></div><div class="rp-detail">G/F · 6'6" · So · 3.7 ppg · GS:0</div></div>
+          </div>
+          <div class="tcard-section-head">Variable scorecard</div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Foster (Jr), Ngongba (Jr), Brown (Sr), Sarr (intl pro 2+ yrs) = 4 yr-3+ players — 9 pts</div></div><span class="tcard-pts">9</span><span class="tcard-max">/12</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">C.Boozer 57.9% FG, Ngongba 60.2% — team 2P% est. ~57% — ≥56% = 11 pts</div></div><span class="tcard-pts">11</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Ngongba 6'11" at 22.4 MPG — 6'10 at 15-25 MPG = 3 pts</div></div><span class="tcard-pts">7</span><span class="tcard-max">/10</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">9 players confirmed — 9 pts (9+ tier, elite depth)</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">16.7 APG / 10.3 TPG = 1.62 — ≥1.50 = 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Starters at 6'5+</div><div class="tcard-val">Cam.Boozer 6'9"✓, Ngongba 6'11"✓, Evans 6'6"✓, Sarr 6'7"✓, Brown 6'9"✓ = 5 starters (Cayden Boozer 6'4" does not qualify)</div></div><span class="tcard-pts">8</span><span class="tcard-max">/8</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top scorer usage share</div><div class="tcard-val">Cam.Boozer USG% 29.5% — ≤32% = 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/7</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Cayden Boozer, Brown, Khamenia, Harris all off bench = 4+ bench players — 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/6</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">36.8% OR% — ≥33% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">46.4% — ≤46% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 60.4% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Roster is predominantly freshmen/sophomores — no qualifying transfers = 0 pts</div></div><span class="tcard-pts">0</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">FT%</div><div class="tcard-val">72.9% — below 73% threshold = 0 pts (theScore confirmed)</div></div><span class="tcard-pts">0</span><span class="tcard-max">/3</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Foster missed some games — 1 pt</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+        </div>
+        <p class="source-note">Score: 9+11+7+9+6+8+2+6+5+5+4+0+0+1 = <strong>73</strong>. Corrections: Brown is 6'9" Sr (not 6'7" So); Evans is 6'6" So (not 6'7"). Duke's gaps: 4 yr-3+ (9 not 12 pts) and zero qualifying transfers. Lost to UConn on last-second 35-foot heave. Heights from goduke.com official. OR%/opp 2P% TeamRankings. FT% theScore confirmed.</p>
+      </div>
+
+      <!-- UCONN -->
+      <div class="team-card active" id="tc-uconn">
+        <div class="team-header-row">
+          <span class="team-name-lg">UConn</span>
+          <span class="team-record">34-6 · National Runner-Up</span>
+          <span class="team-seed">#2 seed · Big East</span>
+        </div>
+        <div class="team-score-total">
+          <div><div class="team-score-num" style="color:var(--amber-dark);">69</div></div>
+          <div class="team-score-label">out of 100<br>Adj ORtg 118.9 (#28) · Adj DRtg 94.6 (#11) · Opp 2P% 46.0%</div>
+          <span class="team-score-badge badge-sweet16">Tournament-capable</span>
+        </div>
+        <div class="card">
+          <div class="tcard-section-head">Rotation — 8 players at 10+ MPG (Fox Sports + UConn Athletics verified)</div>
+          <div class="rotation-grid">
+            <div class="rotation-player"><div class="rp-name">Alex Karaban <span class="rp-mpg">33.9</span></div><div class="rp-detail">F · 6'8" · Sr · 13.2 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Solo Ball <span class="rp-mpg">29.1</span></div><div class="rp-detail">G · 6'4" · Jr · 12.8 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Silas Demary Jr. <span class="rp-mpg">29.0</span></div><div class="rp-detail">G · 6'4" · Jr · 12.4 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Braylon Mullins <span class="rp-mpg">27.5</span></div><div class="rp-detail">G · 6'6" · Fr · 12.0 ppg · GS:29</div></div>
+            <div class="rotation-player"><div class="rp-name">Tarris Reed Jr. <span class="rp-mpg">26.2</span></div><div class="rp-detail">C · 6'11" · Sr · 13.7 ppg · GS:39</div></div>
+            <div class="rotation-player"><div class="rp-name">Jaylin Stewart <span class="rp-mpg">16.2</span></div><div class="rp-detail">F · 6'7" · Jr · 4.2 ppg · GS:12</div></div>
+            <div class="rotation-player"><div class="rp-name">Eric Reibe <span class="rp-mpg">15.0</span></div><div class="rp-detail">C · 6'8" · Fr · 4.1 ppg · GS:0</div></div>
+            <div class="rotation-player"><div class="rp-name">Malachi Smith <span class="rp-mpg">14.9</span></div><div class="rp-detail">G · 6'1" · R-Sr · 3.6 ppg · GS:0</div></div>
+          </div>
+          <div class="tcard-section-head">Variable scorecard</div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Karaban (Sr), Ball (Jr), Reed (Sr), Stewart (Jr), M.Smith (Sr) = 5 players</div></div><span class="tcard-pts">12</span><span class="tcard-max">/12</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">Reed TS% 62.7% but perimeter-heavy offense; team 2P% est. ~52% — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Reed 6'11" · 26.2 MPG · GS:39 (full starter) — 6'11+ starter tier = 10 pts</div></div><span class="tcard-pts">10</span><span class="tcard-max">/10</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">8 players confirmed — 6 pts (8-player tier)</div></div><span class="tcard-pts">6</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">18.4 APG / 10.3 TPG = 1.78 — ≥1.70 = 9 pts</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Starters at 6'5+</div><div class="tcard-val">Reed 6'11"✓, Karaban 6'8"✓, Stewart 6'7"✓, Mullins 6'6"✓ = 4 starters (Ball 6'4" and Demary 6'4" do NOT qualify) — 8 pts</div></div><span class="tcard-pts">5</span><span class="tcard-max">/8</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Top scorer usage share</div><div class="tcard-val">Reed USG% 25.8% — ≤28% = 5 pts</div></div><span class="tcard-pts">7</span><span class="tcard-max">/7</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Stewart, Reibe, M.Smith off bench = 3 bench players — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/6</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">33.9% OR% — ≥33% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">46.0% — ≤46% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 58.4% — eFG% below 54% threshold = 0 pts</div></div><span class="tcard-pts">0</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">M.Smith (Dayton), Demary (Georgia) both qualify — 2 qualifying transfers = 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">FT%</div><div class="tcard-val">72.4% — below 73% threshold = 0 pts (confirmed)</div></div><span class="tcard-pts">0</span><span class="tcard-max">/3</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Stewart missed ~1 month (knee); Ball injured late — 1 pt</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
+        </div>
+        <p class="source-note">Score: 12+4+10+6+9+8+5+4+5+5+0+2+0+1 = <strong>69</strong>. Key corrections: Reed is 6'11" (10 pts anchor, not 7), Mullins is 6'6" starter (4 starters at 6'5+, 8 pts). Heights from uconnhuskies.com official. Ball 6'4" and Demary 6'4" do not qualify for 6'5+ variable. OR%/opp 2P% TeamRankings. FT% confirmed.</p>
+      </div>
+
+    </div>
+  </div>
+</div><!-- end page-wrap -->
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(function(t) {
+      t.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    var target = document.getElementById('tab-' + id);
+    if (target) target.classList.add('active');
+    if (btn) btn.classList.add('active');
+  }
+
+  function openTeam(teamId, pill) {
+    var btns = document.querySelectorAll('.tab-btn');
+    var teamBtn = null;
+    btns.forEach(function(b) {
+      if (b.textContent.trim() === 'Team scorecards') teamBtn = b;
+    });
+    if (teamBtn) switchTab('teams', teamBtn);
+    showTeam(teamId, null);
+    document.querySelectorAll('.team-sel-btn').forEach(function(b) {
+      b.classList.remove('active');
+      var name = b.textContent.split(' ·')[0].trim().toLowerCase();
+      if (name === teamId) b.classList.add('active');
+    });
+  }
+
+  function showTeam(teamId, btn) {
+    document.querySelectorAll('.team-card').forEach(function(c) {
+      c.classList.remove('active');
+    });
+    var card = document.getElementById('tc-' + teamId);
+    if (card) card.classList.add('active');
+    if (btn) {
+      document.querySelectorAll('.team-sel-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    }
+  }
+
+  // Wire up all buttons via JS as a fallback (belt-and-suspenders for local file security)
+  document.addEventListener('DOMContentLoaded', function() {
+    // Tab buttons
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = btn.getAttribute('data-tab');
+        if (id) switchTab(id, btn);
+      });
+    });
+    // Team selector buttons
+    document.querySelectorAll('.team-sel-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = btn.getAttribute('data-team');
+        if (id) showTeam(id, btn);
+      });
+    });
+    // Team pills
+    document.querySelectorAll('.clickable-team').forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        var id = pill.getAttribute('data-team');
+        if (id) openTeam(id, pill);
+      });
+    });
+  });
+</script>
+
+
+</body></html>
