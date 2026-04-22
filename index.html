@@ -488,7 +488,7 @@
   </div>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('exec', this)" data-tab="exec">Summery</button>
+    <button class="tab-btn active" onclick="switchTab('exec', this)" data-tab="exec">Summary</button>
     <button class="tab-btn" onclick="switchTab('vars', this)" data-tab="vars">Variable rankings</button>
     <button class="tab-btn" onclick="switchTab('transfers', this)" data-tab="transfers">Transfer analysis</button>
     <button class="tab-btn" onclick="switchTab('checklist', this)" data-tab="checklist">Checklist model</button>
@@ -498,10 +498,10 @@
     <button class="tab-btn" onclick="switchTab('teams', this)" data-tab="teams">Team scorecards</button>
   </div>
 
-  <!-- EXECUTIVE SUMMERY -->
+  <!-- EXECUTIVE SUMMARY -->
   <div id="tab-exec" class="tab-content active">
     <div class="section">
-      <div class="section-label">Executive summery</div>
+      <div class="section-label">Executive summary</div>
       <div class="grid4">
         <div class="metric-card">
           <div class="metric-label">Strongest denominator</div>
@@ -527,7 +527,7 @@
       <div class="card">
         <div class="insight-box">
           <div class="insight-title">Main Variable FInding</div>
-          All eight 2026 Elite Eight teams share a common structural profile: a deep, experienced rotation, instead of a purely talented one, that is built around interior efficiency, disciplined ball movement(A/TO), and at least one dominant physical ANCHOR at 6'10+. Transfer count alone is uncorrelated with advancement. What matters is whether transferred players are in top-8 minutes and have proven production at their previous school.
+          All eight 2026 Elite Eight teams share a common structural profile: a deep, experienced rotation, instead of a purely talented one, that is built around interior efficiency, disciplined ball movement(A/TO), and at least one dominant physical ANCHOR at 6'10+. In this sample, raw transfer count alone does not appear to predict advancement. What matters is whether transferred players are in top-8 minutes and have proven production at their previous school.
         </div>
         <div class="insight-box">
           <div class="insight-title">How Experience Links to Efficiency</div>
@@ -559,7 +559,7 @@
         </div>
 
         <div class="var-row">
-          <div><div class="var-name">Team 2P% ≥ 54%</div><div class="var-note">Interior shot quality. Proxy for half-court efficiency and paint access. The single most predictive offensive stat.</div></div>
+          <div><div class="var-name">Team 2P% ≥ 54%</div><div class="var-note">Interior shot quality. Proxy for half-court efficiency and paint access. The among the most predictive offensive stats in this sample.</div></div>
           <span><span class="badge b-strong">Strong</span></span>
           <span class="pts">11 pts</span>
         </div>
@@ -1061,7 +1061,7 @@
 
         <div class="stress-row">
           <div class="stress-q">What likely holds over the last decade?</div>
-          <div class="stress-a">Experience depth (year-3+ players in top 8) has been one of the strongest predictors of tournament advancement since 2014. The NCAA Tournament consistently favors older rosters. Rotation depth (8+ players at 10 MPG) and assist/turnover ratio are similarly stable across years. Physical size at center (6'10+) has appeared in most deep tournament runs for 10+ years regardless of era or conference affiliation.</div>
+          <div class="stress-a">Experience depth (year-3+ players in top 8) has been one of the consistently strong predictors of tournament advancement in recent years. The NCAA Tournament consistently favors older rosters. Rotation depth (8+ players at 10 MPG) and assist/turnover ratio are similarly stable across years. Physical size at center (6'10+) has appeared in most deep tournament runs for 10+ years regardless of era or conference affiliation.</div>
         </div>
 
         <div class="stress-row">
@@ -1092,8 +1092,8 @@
       <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1rem;">Each team scored against the 100-point model. ✓ = threshold met, ✗ = threshold missed.</p>
 
       <div class="team-selector">
-        <button class="team-sel-btn" onclick="showTeam('illinois', this)" data-team="illinois">Illinois · 78</button>
-        <button class="team-sel-btn" onclick="showTeam('iowa', this)" data-team="iowa">Iowa · 66</button>
+        <button class="team-sel-btn" onclick="showTeam('illinois', this)" data-team="illinois">Illinois · 85</button>
+        <button class="team-sel-btn" onclick="showTeam('iowa', this)" data-team="iowa">Iowa · 69</button>
         <button class="team-sel-btn" onclick="showTeam('arizona', this)" data-team="arizona">Arizona · 76</button>
         <button class="team-sel-btn" onclick="showTeam('purdue', this)" data-team="purdue">Purdue · 78</button>
         <button class="team-sel-btn" onclick="showTeam('michigan', this)" data-team="michigan">Michigan · 91</button>
@@ -1108,7 +1108,7 @@
         <div class="team-header-row">
           <span class="team-name-lg">Illinois</span>
           <span class="team-record">28-9 · Final Four</span>
-          <span class="team-seed">#5 seed · Big Ten</span>
+          <span class="team-seed">#3 seed · Big Ten</span>
         </div>
         <div class="team-score-total">
           <div><div class="team-score-num" style="color:var(--teal-dark);">78</div></div>
@@ -1129,7 +1129,7 @@
           </div>
           <div class="tcard-section-head">Variable scorecard</div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">4+ year-3+ players in top-8 rotation</div><div class="tcard-val">Boswell (Sr), T.Ivisic (Jr), Humrichous (Sr), J.Davis (R-Jr), Z.Ivisic (Jr) = 5 players</div></div><span class="tcard-pts">12</span><span class="tcard-max">/12</span></div>
-          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">High 3-point volume team; est. 2P% ~52% — below 54% threshold</div></div><span class="tcard-pts">4</span><span class="tcard-max">/11</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Team 2P%</div><div class="tcard-val">Official stats: 658-for-1144 two-point attempts = 57.5% 2P% — ≥56% tier = 11 pts</div></div><span class="tcard-pts">11</span><span class="tcard-max">/11</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">6'10+ starter at ≥25 MPG</div><div class="tcard-val">Tomislav Ivisic 7'1" · 25.2 MPG · GS:32 · 6'11+ starter = 10 pts</div></div><span class="tcard-pts">10</span><span class="tcard-max">/10</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Players averaging 10+ MPG</div><div class="tcard-val">8 players confirmed — 6 pts (8-player tier)</div></div><span class="tcard-pts">6</span><span class="tcard-max">/9</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Assist/turnover ratio</div><div class="tcard-val">14.7 APG / 8.6 TPG = 1.71 — ≥1.70 = 9 pts</div></div><span class="tcard-pts">9</span><span class="tcard-max">/9</span></div>
@@ -1143,7 +1143,7 @@
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">FT%</div><div class="tcard-val">79.3% — ≥76% = 3 pts (fightingillini.com confirmed)</div></div><span class="tcard-pts">3</span><span class="tcard-max">/3</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Boswell missed ~7 games (hand fracture) — 1 pt (≤6 threshold missed)</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
         </div>
-        <p class="source-note">Score: 12+4+10+6+9+8+7+4+5+3+2+4+3+1 = <strong>78</strong>. Heights from fightingillini.com official (T.Ivisic 7'1", Z.Ivisic 7'2"). OR% and opp 2P% TeamRankings. FT% fightingillini.com. Adj ORtg/DRtg Bart Torvik.</p>
+        <p class="source-note">Score: 12+11+10+6+9+8+7+4+5+3+2+4+3+1 = <strong>85</strong>. Official 2P%: 658/1144 = 57.5% (≥56% tier = 11 pts). Official eFG%: 54.7% (≥54% tier = 2 pts). Seed corrected to #3.. Heights from fightingillini.com official (T.Ivisic 7'1", Z.Ivisic 7'2"). OR% and opp 2P% TeamRankings. FT% fightingillini.com. Adj ORtg/DRtg Bart Torvik.</p>
       </div>
 
       <!-- IOWA -->
@@ -1182,12 +1182,12 @@
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Koch (GS:0), Folgueiras (GS:1), Howard (GS:0), Sage (GS:0), Hausen (GS:0) = 5 bench players — 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/6</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">32.7% OR% — ≥30% = 3 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">3</span><span class="tcard-max">/5</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">54.3% — above 50% = 0 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">0</span><span class="tcard-max">/5</span></div>
-          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 60.6% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">eFG% est. ≥56% (high-efficiency offense, Manyawu/Banks interior + Stirtz efficiency) = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Combs (Wyoming→Drake→Iowa), Folgueiras (Robert Morris) — 2 qualifying = 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/4</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">FT%</div><div class="tcard-val">76.9% — ≥76% = 3 pts (Iowa official athletics confirmed)</div></div><span class="tcard-pts">3</span><span class="tcard-max">/3</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Stirtz played all 37 games; McCollum played all — 3 pts</div></div><span class="tcard-pts">3</span><span class="tcard-max">/3</span></div>
         </div>
-        <p class="source-note">Score: 12+8+3+9+9+2+5+6+3+0+4+2+3+3 = <strong>66</strong>. Iowa's gaps: only 2 starters at 6'5+ (small-ball system), no opp 2P% defense (54.3%, worst in E8), anchor only 3 pts (Folgueiras bench). Reached E8 on elite A/T ratio (1.70), 9-deep rotation, and McCollum system. Heights/GS from Fox Sports and hawkeyesports.com. OR%/opp 2P% TeamRankings. FT% Iowa official athletics.</p>
+        <p class="source-note">Score: 12+8+3+9+9+2+5+6+3+0+4+2+3+3 = <strong>69</strong>. Iowa's gaps: only 2 starters at 6'5+ (small-ball system), no opp 2P% defense (54.3%, worst in E8), anchor only 3 pts (Folgueiras bench). Reached E8 on elite A/T ratio (1.70), 9-deep rotation, and McCollum system. Heights/GS from Fox Sports and hawkeyesports.com. OR%/opp 2P% TeamRankings. FT% Iowa official athletics.</p>
       </div>
 
       <!-- ARIZONA -->
@@ -1225,8 +1225,8 @@
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Dell'Orso, Awaka, Aristode off bench = 3 bench players — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/6</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">38.2% OR% — ≥33% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">44.2% — ≤46% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
-          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 60.7% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
-          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Kharchenkov (international), Dell'Orso (USC) qualify — 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">eFG% est. ≥56% (Krivas 7'2" and Awaka 6'8" interior + Peat 52.8% FG — note: exact eFG% estimated) = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Dell'Orso (Campbell) qualifies as impact transfer. Kharchenkov is an international freshman — not a college transfer — 1 qualifying = 2 pts</div></div><span class="tcard-pts">2</span><span class="tcard-max">/4</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">FT%</div><div class="tcard-val">75.3% — ≥73% = 1 pt (confirmed)</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Peat missed ~9 games — 1 pt (≤6 threshold missed)</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
         </div>
@@ -1313,7 +1313,7 @@
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">McKenney, Gayle, Burnett, Cason, Tschetter off bench = 4+ bench players — 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/6</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">36.3% OR% — ≥33% = 5 pts</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">43.8% — ≤46% = 5 pts (#1 defense nationally))</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
-          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% ~62% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">eFG% est. ≥56% (Mara TS% 66.6%, Johnson TS% 69.1% — note: eFG% estimated from interior FG rates) = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Lendeborg (UAB), Cadeau (UNC), Johnson (Illinois), Mara (UCLA), Gayle (OSU) — 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">FT%</div><div class="tcard-val">76.4% — ≥76% = 3 pts </div></div><span class="tcard-pts">3</span><span class="tcard-max">/3</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Lendeborg played all 37; Cason missed ~9 — 1 pt</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
@@ -1400,7 +1400,7 @@
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Bench players at 10+ MPG</div><div class="tcard-val">Cayden Boozer, Brown, Khamenia, Harris all off bench = 4+ bench players — 6 pts</div></div><span class="tcard-pts">6</span><span class="tcard-max">/6</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Offensive rebound %</div><div class="tcard-val">36.8% OR% — ≥33% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">Opponent 2P% allowed</div><div class="tcard-val">46.4% — ≤46% = 5 pts (TeamRankings confirmed)</div></div><span class="tcard-pts">5</span><span class="tcard-max">/5</span></div>
-          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">TS% 60.4% — eFG% ≥56% = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
+          <div class="tcard-row"><div class="tcard-icon icon-pass">✓</div><div><div class="tcard-var">eFG%</div><div class="tcard-val">eFG% est. ≥56% (C.Boozer 57.9% FG, Ngongba 60.2% FG, interior efficiency) = 4 pts</div></div><span class="tcard-pts">4</span><span class="tcard-max">/4</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Impact transfers in top-8 minutes</div><div class="tcard-val">Roster is predominantly freshmen/sophomores — no qualifying transfers = 0 pts</div></div><span class="tcard-pts">0</span><span class="tcard-max">/4</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">FT%</div><div class="tcard-val">72.9% — below 73% threshold = 0 pts (theScore confirmed)</div></div><span class="tcard-pts">0</span><span class="tcard-max">/3</span></div>
           <div class="tcard-row"><div class="tcard-icon icon-fail">✗</div><div><div class="tcard-var">Top-5 games missed</div><div class="tcard-val">Foster missed some games — 1 pt</div></div><span class="tcard-pts">1</span><span class="tcard-max">/3</span></div>
